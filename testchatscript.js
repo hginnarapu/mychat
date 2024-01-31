@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     // Replace 'YOUR_API_KEY' with your actual OpenAI API key
     const apiKey = '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';
-    const endpoint = 'https://api.openai.com/v1/engines/gpt-3.5-turbo/completions';
+    const endpoint = 'https://api.openai.com/v1/chat/completions';
 
     toggleChat.click(function() {
         chatbox.toggleClass('minimized');
