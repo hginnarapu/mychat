@@ -1,35 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const chatBody = document.getElementById("chat-body");
-    const userInput = document.getElementById("user-input");
-    const sendButton = document.getElementById("send-btn");
+$(document).ready(function() {
+    var chatbox = $('#chatbox');
+    var toggleChat = $('#toggle-chat');
+    var userInput = $('#user-input');
+    var sendBtn = $('#send-btn');
+    var chatBody = $('#chat-body');
 
-    // Event listener for sending user messages
-    sendButton.addEventListener("click", function () {
-        const userMessage = userInput.value.trim();
-        if (userMessage !== "") {
-            addMessage("sent", userMessage);
-            processUserMessage(userMessage);
-            userInput.value = "";
+    // Replace 'YOUR_API_KEY' with your actual OpenAI API key
+    const apiKey = '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';
+    const endpoint = 'https://api.openai.com/v1/engines/gpt-3.5-turbo/completions';
+
+    toggleChat.click(function() {
+        chatbox.toggleClass('minimized');
+        if (chatbox.hasClass('minimized')) {
+            toggleChat.text('+');
+        } else {
+            toggleChat.text('-');
         }
     });
 
-    // Function to add a message to the chatbox
-    function addMessage(type, text) {
-        const messageElement = document.createElement("div");
-        messageElement.className = `message ${type}`;
-        messageElement.textContent = text;
-        chatBody.appendChild(messageElement);
+    function sendMessage() {
+        var userMessage = userInput.val().trim();
+        if (userMessage !== "") {
+            addMessage("You", userMessage);
+            userInput.val("");
 
-        // Scroll to the bottom to show the latest message
-        chatBody.scrollTop = chatBody.scrollHeight;
+            // Call the OpenAI API to get a response from ChatGPT
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    prompt: `User: ${userMessage}\nChatbot:`,
+                    max_tokens: 50
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const chatbotResponse = data.choices[0].text;
+                addMessage("Chatbot", chatbotResponse);
+            })
+            .catch(error => console.error(error));
+        }
     }
 
-    // Function to simulate bot responses (replace with actual chatbot logic)
-    function processUserMessage(userMessage) {
-        // Simulate a bot response (replace this with actual chatbot logic)
-        setTimeout(function () {
-            const botResponse = "I received your message: " + userMessage;
-            addMessage("received", botResponse);
-        }, 1000);
+    sendBtn.click(function() {
+        sendMessage();
+    });
+
+    userInput.on('keydown', function(event) {
+        if (event.keyCode === 13) { // Enter key
+            sendMessage();
+        }
+    });
+
+    function addMessage(sender, message) {
+        var messageElement = $('<div class="message"></div>');
+        messageElement.text(sender + ": " + message);
+        chatBody.append(messageElement);
     }
 });
