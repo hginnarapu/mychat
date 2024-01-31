@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylechat.css">
-    <title>Chatbot</title>
+    <link rel="stylesheet" href="chatbox.css">
+    <title>Chatbox</title>
 </head>
 <body>
-    <div class="chatbox">
+    <div id="chatbox" class="chatbox minimized">
         <div class="chat-header">
-            <h2>Chatbot</h2>
+            <h2>Chatbox</h2>
+            <button id="toggle-chat" class="toggle-chat">+</button>
         </div>
         <div class="chat-body" id="chat-body">
-            <div class="message received">Hello! How can I assist you today?</div>
+            <!-- Chat messages go here -->
         </div>
         <div class="chat-footer">
             <input type="text" id="user-input" placeholder="Type your message...">
             <button id="send-btn">Send</button>
         </div>
     </div>
-    <script src="testchatscript.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="chatbox.js"></script>
 </body>
 </html>
