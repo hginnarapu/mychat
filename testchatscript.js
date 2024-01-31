@@ -6,7 +6,7 @@ $(document).ready(function() {
     var chatBody = $('#chat-body');
 
     // Replace 'YOUR_API_KEY' with your actual OpenAI API key
-    const apiKey = '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';
+    const apiKey = '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';
     const endpoint = 'https://api.openai.com/v1/chat/completions';
 
     toggleChat.click(function() {
@@ -32,13 +32,17 @@ $(document).ready(function() {
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    prompt: `User: ${userMessage}\nChatbot:`,
-                    max_tokens: 50
+                    messages: [
+              { role: "system", content: "You are a helpful assistant who can only speak Telangana telugu" },
+              { role: "user", content: userMessage }
+            ],
+            model: "gpt-3.5-turbo"
+                    
                 })
             })
             .then(response => response.json())
             .then(data => {
-                const chatbotResponse = data.choices[0].text;
+                const chatbotResponse = data.choices[0].message.content;
                 addMessage("Chatbot", chatbotResponse);
             })
             .catch(error => console.error(error));
