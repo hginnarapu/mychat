@@ -6,7 +6,7 @@ $(document).ready(function() {
     var chatBody = $('#chat-body');
 
     // Replace 'YOUR_API_KEY' with your actual OpenAI API key
-    const apiKey = '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';
+    const apiKey = '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';
     const endpoint = 'https://api.openai.com/v1/chat/completions';
 
     toggleChat.click(function() {
